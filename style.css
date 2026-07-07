@@ -56,6 +56,21 @@ p {
   margin: 0.8em 0;
 }
 
+.guide-text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+/* this is for line breaking so you copy paste things and it doesnt scroll sideways forever
+to use paste it like this:
+<div class="guide-text">
+
+Paste your notes here.
+
+They will preserve line breaks.
+
+</div> */ 
+
+
 /* --- LINKS --- */
 a {
   color: var(--accent-gold);
