@@ -27,11 +27,11 @@ body {
 
 /* Explicit animations (two on each .bg) */
 .bg-one {
-  background-image: url("assets/bg-1.jpg");
+  background-image: url("assets/bg-1.jpeg");
   animation: fadeOne 10s linear infinite, slowZoom 14s ease-in-out infinite alternate;
 }
 .bg-two {
-  background-image: url("assets/bg-2.jpg");
+  background-image: url("assets/bg-2.jpeg");
   animation: fadeTwo 10s linear infinite, slowZoom 14s ease-in-out infinite alternate;
 }
 
@@ -48,7 +48,7 @@ body {
   position: absolute;
   top: 7%;
   left: 50%;
-  width: clamp(90px, 12vw, 170px);
+  width: clamp(130px, 12vw, 250px);
   transform: translateX(-50%);
   z-index: 5;
   filter: drop-shadow(0 0 25px rgba(255, 199, 87, 0.65));
