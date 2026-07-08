@@ -27,11 +27,11 @@ body {
 
 /* Explicit animations (two on each .bg) */
 .bg-one {
-  background-image: url("assets/bg-1.jpeg");
+  background-image: url("assets/bg-1.jpg");
   animation: fadeOne 10s linear infinite, slowZoom 14s ease-in-out infinite alternate;
 }
 .bg-two {
-  background-image: url("assets/bg-2.jpeg");
+  background-image: url("assets/bg-2.jpg");
   animation: fadeTwo 10s linear infinite, slowZoom 14s ease-in-out infinite alternate;
 }
 
