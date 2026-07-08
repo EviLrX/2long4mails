@@ -136,27 +136,7 @@ body {
   transition: 0.3s ease;
 }
 
-.pillar.open .dropdown,
-.pillar:hover .dropdown {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
 
-.dropdown a {
-  color: #f4e7c1;
-  text-decoration: none;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border-left: 2px solid transparent;
-  transition: 0.2s ease;
-}
-
-.dropdown a:hover {
-  color: #ffd56f;
-  border-left-color: #ffd56f;
-  background: rgba(255, 213, 111, 0.1);
-}
 
 .hero-text {
   position: absolute;
@@ -259,49 +239,5 @@ body {
     opacity: 1;
   }
 
-  .pillar {
-    top: 0;
-  }
 }
-
-.pillar {
-  position: fixed;
-  top: 2rem;
-  bottom: 2rem;
-  width: 180px;
-}
-
-.pillar-left {
-  left: 5rem;
-}
-
-.pillar-right {
-  right: 5rem;
-}
-
-.pillar-toggle {
-  position: absolute;
-  top: 2rem;        /* button starts near top */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-}
-
-.pillar-menu {
-  position: absolute;
-  top: 6.5rem;      /* menu starts below button */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-
-  transition: max-height 0.45s ease, opacity 0.3s ease;
-}
-
-.pillar.open .pillar-menu {
-  max-height: 400px;
-  opacity: 1;
-}
+/* Pillars: single consistent implementation */.pillar {position: fixed;top: 2rem;bottom: 2rem;width: clamp(120px, 15vw, 210px);z-index: 4;background:linear-gradient(90deg, #0b0b0d, #2b2520 45%, #0a0a0c),repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 2px, transparent 2px 18px);border: 2px solid rgba(218, 180, 91, 0.45);box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 25px 40px rgba(0,0,0,0.75);}
