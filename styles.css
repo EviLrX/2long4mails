@@ -263,3 +263,45 @@ body {
     top: 0;
   }
 }
+
+.pillar {
+  position: fixed;
+  top: 2rem;
+  bottom: 2rem;
+  width: 180px;
+}
+
+.pillar-left {
+  left: 5rem;
+}
+
+.pillar-right {
+  right: 5rem;
+}
+
+.pillar-toggle {
+  position: absolute;
+  top: 2rem;        /* button starts near top */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.pillar-menu {
+  position: absolute;
+  top: 6.5rem;      /* menu starts below button */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+
+  transition: max-height 0.45s ease, opacity 0.3s ease;
+}
+
+.pillar.open .pillar-menu {
+  max-height: 400px;
+  opacity: 1;
+}
