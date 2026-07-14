@@ -1,3 +1,5 @@
+document.addEventListener(‘DOMContentLoaded’, () => {//
+
 document.addEventListener('DOMContentLoaded', () => {
   const pillars = document.querySelectorAll('.pillar');
 
@@ -47,4 +49,5 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+});
 });
