@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Golds 4 Souls - Energy" />
   <title>Golds 4 Souls</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -11,11 +13,11 @@
     <div class="bg bg-two"></div>
     <div class="vignette"></div>
 
-    <img src="assets/crown.jpeg" alt="Crown" class="crown" /> 
+    <img src="assets/crown.jpeg" alt="Crown icon" class="crown" loading="lazy" /> 
 
     <nav class="pillar pillar-left" aria-label="Main menu">
-      <button class="pillar-toggle" aria-expanded="false">Menu</button>
-      <div class="dropdown" role="menu">
+      <button class="pillar-toggle" aria-expanded="false" aria-controls="menu-main">Menu</button>
+      <div class="dropdown" id="menu-main" role="menu">
         <a href="about.html" role="menuitem">About</a>
         <a href="gallery.html" role="menuitem">Gallery</a>
         <a href="projects.html" role="menuitem">Projects</a>
@@ -24,8 +26,8 @@
     </nav>
 
     <nav class="pillar pillar-right" aria-label="Explore menu">
-      <button class="pillar-toggle" aria-expanded="false">Explore</button>
-      <div class="dropdown" role="menu">
+      <button class="pillar-toggle" aria-expanded="false" aria-controls="menu-explore">Explore</button>
+      <div class="dropdown" id="menu-explore" role="menu">
         <a href="blog.html" role="menuitem">Blog</a>
         <a href="shakes.html" role="menuitem">Shakes</a>
         <a href="events.html" role="menuitem">Events</a>
@@ -34,11 +36,10 @@
     </nav>
 
     <section class="hero-text">
-      <h1>E NE R GY</h1>
-      <p></p>
+      <h1>E N E R G Y</h1>
     </section>
   </main>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
