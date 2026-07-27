@@ -1,18 +1,50 @@
+:root{
+  /* Colors & theme */
+  --bg-color: #020204;
+  --text-color: #f4e7c1;
+  --muted-text: #cdbb91;
+  --accent: #ffd56f;
+  --panel-border: rgba(218, 180, 91, 0.5);
+
+  /* Sizing */
+  --pillar-width-min: 120px;
+  --pillar-width-max: 210px;
+
+  /* Animation timings */
+  --fade-duration: 10s;
+  --zoom-duration: 14s;
+  --crown-reveal: 1.8s;
+  --crown-float: 3s;
+  --text-reveal: 2s;
+  --ease-in-out: ease-in-out;
+
+  /* Z layers */
+  --z-bg: 0;
+  --z-vignette: 2;
+  --z-hero: 3;
+  --z-pillars: 4;
+  --z-ui: 6;
+}
+
+/* Basic reset & accessibility */
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  overflow: hidden;
-  background: #020204;
+  background: var(--bg-color);
   font-family: Georgia, "Times New Roman", serif;
-  color: #f4e7c1;
+  color: var(--text-color);
+  /* Do not force overflow:hidden on body — allows natural scrolling and better accessibility.
+     If you must lock scroll for modal-like UI, do so on a wrapper element instead. */
 }
 
+/* Full-screen landing container: prefer svh for mobile chrome, fallback to vh */
 .landing {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  background: #020204;
+  min-height: 100svh;
+  min-height: 100vh;
+  background: var(--bg-color);
   isolation: isolate;
 }
 
@@ -22,37 +54,53 @@ body {
   inset: 0;
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
   transform: scale(1.05);
+  will-change: opacity, transform;
+  z-index: var(--z-bg);
 }
 
 /* Explicit animations (two on each .bg) */
 .bg-one {
   background-image: url("assets/bt-1.webp");
-  animation: fadeOne 10s linear infinite, slowZoom 14s ease-in-out infinite alternate;
+  animation: fadeOne var(--fade-duration) linear infinite, slowZoom var(--zoom-duration) var(--ease-in-out) infinite alternate;
 }
 .bg-two {
   background-image: url("assets/bt-2.webp");
-  animation: fadeTwo 10s linear infinite, slowZoom 14s ease-in-out infinite alternate;
+  animation: fadeTwo var(--fade-duration) linear infinite, slowZoom var(--zoom-duration) var(--ease-in-out) infinite alternate;
 }
 
+/* Reduced-data fallback (toggleable via JS: document.documentElement.classList.add('reduced-data')).
+   This lets you avoid loading heavy images for users who requested data savings. */
+.reduced-data .bg {
+  background-image: none !important;
+  background-color: #0b0b0d;
+  transform: none;
+  animation: none !important;
+}
+
+/* Vignette overlay for legibility */
 .vignette {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.45) 55%, #000 100%),
     linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9));
-  z-index: 2;
+  z-index: var(--z-vignette);
+  pointer-events: none;
 }
 
+/* Crown (decorative) */
 .crown {
   position: absolute;
   top: 7%;
   left: 50%;
   width: clamp(60px, 12vw, 130px);
   transform: translateX(-50%);
-  z-index: 5;
+  z-index: var(--z-ui);
   filter: drop-shadow(0 0 25px rgba(255, 199, 87, 0.65));
-  animation: crownReveal 1.8s ease forwards, crownFloat 3s ease-in-out 2s infinite;
+  animation: crownReveal var(--crown-reveal) ease forwards, crownFloat var(--crown-float) var(--ease-in-out) 2s infinite;
+  will-change: transform, opacity;
 }
 
 /* Pillars: single consistent implementation */
@@ -60,112 +108,26 @@ body {
   position: fixed;
   top: 2rem;
   bottom: 2rem;
-  width: clamp(120px, 15vw, 210px);
-  z-index: 4;
+  width: clamp(var(--pillar-width-min), 15vw, var(--pillar-width-max));
+  z-index: var(--z-pillars);
   background:
     linear-gradient(90deg, #0b0b0d, #2b2520 45%, #0a0a0c),
     repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 2px, transparent 2px 18px);
   border: 2px solid rgba(218, 180, 91, 0.45);
   box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 25px 40px rgba(0, 0, 0, 0.75);
   overflow: visible;
+  border-radius: 8px;
 }
 
 /* Placement */
 .pillar-left { left: 5rem; }
 .pillar-right { right: 5rem; }
 
-/* Toggle button near top */
+/* Toggle button near top — use <button> in markup with aria-expanded, aria-controls */
 .pillar-toggle {
   position: absolute;
   top: 1.25rem;
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
-  padding: 14px 10px;
-  border: 1px solid rgba(255, 215, 130, 0.65);
-  background: rgba(0, 0, 0, 0.65);
-  color: #ffe7a1;
-  cursor: pointer;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  z-index: 6;
-}
-
-/* Dropdown: positioned from top so it doesn't appear at bottom of page */
-.dropdown {
-  position: absolute;
-  top: 4.5rem;         /* anchors under the toggle */
-  left: 50%;
-  transform: translateX(-50%) translateY(-8px);
-  width: 90%;
-  display: grid;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(5, 5, 8, 0.95);
-  border: 1px solid rgba(218, 180, 91, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease, max-height 0.35s ease;
-  max-height: 0;
-  overflow: hidden;
-}
-
-.pillar.open .dropdown,
-.pillar:hover .dropdown {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-  max-height: 400px;
-}
-
-.dropdown a {
-  color: #f4e7c1;
-  text-decoration: none;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border-left: 2px solid transparent;
-  transition: 0.2s ease;
-}
-.dropdown a:hover {
-  color: #ffd56f;
-  border-left-color: #ffd56f;
-  background: rgba(255, 213, 111, 0.1);
-}
-
-/* Hero text */
-.hero-text {
-  position: absolute;
-  left: 50%;
-  top: 58%;
-  z-index: 3;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  opacity: 0;
-  animation: textReveal 2s ease 2s forwards;
-}
-.hero-text h1 { margin: 0; font-size: clamp(2.4rem, 7vw, 6rem); text-shadow: 0 0 30px rgba(255, 213, 111, 0.25); }
-.hero-text p { font-size: clamp(1rem, 2vw, 1.4rem); color: #cdbb91; }
-
-/* Animations */
-@keyframes fadeOne { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-@keyframes fadeTwo { 0%, 49% { opacity: 0; } 50%, 100% { opacity: 1; } }
-@keyframes slowZoom { from { transform: scale(1.05); } to { transform: scale(1.13); } }
-@keyframes crownReveal { from { opacity: 0; transform: translateX(-50%) translateY(-40px) scale(0.85); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
-@keyframes crownFloat { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
-@keyframes textReveal { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
-
-/* Responsive tweaks */
-@media (max-width: 700px) {
-  .pillar { width: 105px; }
-  .pillar-left { left: 3%; }
-  .pillar-right { right: 3%; }
-  .hero-text { top: 62%; }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
-  .bg-one, .crown, .hero-text { opacity: 1; }
-  .pillar { top: 0; }
-}
+  padding: 14px 10px*
