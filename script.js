@@ -1,7 +1,17 @@
-document.addEventListener(‘DOMContentLoaded’, () => {//
-
 document.addEventListener('DOMContentLoaded', () => {
   const pillars = document.querySelectorAll('.pillar');
+  
+  // Helper function to close a pillar and update aria
+  const closePillar = (pillar) => {
+    pillar.classList.remove('open');
+    const button = pillar.querySelector('.pillar-toggle');
+    if (button) button.setAttribute('aria-expanded', 'false');
+  };
+
+  // Helper function to close all pillars
+  const closeAllPillars = () => {
+    pillars.forEach(closePillar);
+  };
 
   pillars.forEach((pillar) => {
     const button = pillar.querySelector('.pillar-toggle');
@@ -11,43 +21,28 @@ document.addEventListener('DOMContentLoaded', () => {
       ev.stopPropagation();
       const willOpen = !pillar.classList.contains('open');
 
-      // close other pillars
+      // Close other pillars
       pillars.forEach((other) => {
-        if (other !== pillar) {
-          other.classList.remove('open');
-          const b = other.querySelector('.pillar-toggle');
-          if (b) b.setAttribute('aria-expanded', 'false');
-        }
+        if (other !== pillar) closePillar(other);
       });
 
-      // toggle this pillar and update aria
+      // Toggle this pillar and update aria
       pillar.classList.toggle('open', willOpen);
       button.setAttribute('aria-expanded', String(willOpen));
     });
   });
 
-  // close when clicking outside any open pillar
+  // Close when clicking outside any open pillar
   document.addEventListener('click', (ev) => {
     pillars.forEach((pillar) => {
       if (pillar.classList.contains('open') && !pillar.contains(ev.target)) {
-        pillar.classList.remove('open');
-        const b = pillar.querySelector('.pillar-toggle');
-        if (b) b.setAttribute('aria-expanded', 'false');
+        closePillar(pillar);
       }
     });
   });
 
-  // close on Escape key for accessibility
+  // Close on Escape key for accessibility
   document.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape') {
-      pillars.forEach((pillar) => {
-        if (pillar.classList.contains('open')) {
-          pillar.classList.remove('open');
-          const b = pillar.querySelector('.pillar-toggle');
-          if (b) b.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
+    if (ev.key === 'Escape') closeAllPillars();
   });
-});
 });
