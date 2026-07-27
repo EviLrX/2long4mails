@@ -1,48 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
   const pillars = document.querySelectorAll('.pillar');
-  
-  // Helper function to close a pillar and update aria
+  let openPillar = null;
+
   const closePillar = (pillar) => {
+    if (!pillar) return;
     pillar.classList.remove('open');
     const button = pillar.querySelector('.pillar-toggle');
     if (button) button.setAttribute('aria-expanded', 'false');
+    if (openPillar === pillar) openPillar = null;
   };
 
-  // Helper function to close all pillars
-  const closeAllPillars = () => {
-    pillars.forEach(closePillar);
-  };
-
-  pillars.forEach((pillar) => {
+  const openPillar = (pillar) => {
+    if (openPillar) closePillar(openPillar);
+    pillar.classList.add('open');
     const button = pillar.querySelector('.pillar-toggle');
+    if (button) button.setAttribute('aria-expanded', 'true');
+    openPillar = pillar;
+  };
+
+  // Event delegation for button clicks
+  document.addEventListener('click', (ev) => {
+    const button = ev.target.closest('.pillar-toggle');
     if (!button) return;
 
-    button.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      const willOpen = !pillar.classList.contains('open');
-
-      // Close other pillars
-      pillars.forEach((other) => {
-        if (other !== pillar) closePillar(other);
-      });
-
-      // Toggle this pillar and update aria
-      pillar.classList.toggle('open', willOpen);
-      button.setAttribute('aria-expanded', String(willOpen));
-    });
+    ev.stopPropagation();
+    const pillar = button.closest('.pillar');
+    
+    if (openPillar === pillar) {
+      closePillar(pillar);
+    } else {
+      openPillar(pillar);
+    }
   });
 
-  // Close when clicking outside any open pillar
+  // Close when clicking outside
   document.addEventListener('click', (ev) => {
-    pillars.forEach((pillar) => {
-      if (pillar.classList.contains('open') && !pillar.contains(ev.target)) {
-        closePillar(pillar);
-      }
-    });
+    if (openPillar && !openPillar.contains(ev.target)) {
+      closePillar(openPillar);
+    }
   });
 
-  // Close on Escape key for accessibility
+  // Close on Escape
   document.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape') closeAllPillars();
+    if (ev.key === 'Escape' && openPillar) closePillar(openPillar);
   });
 });
