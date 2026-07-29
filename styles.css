@@ -11,8 +11,10 @@
   --pillar-width-max: 210px;
 
   /* Animation timings */
-  --fade-duration: 10s;
-  --zoom-duration: 14s;
+  --fade-duration: 10s; /* background cross-fade duration */
+  --zoom-duration: 14s; /* background slow zoom */
+  --pillars-drop-duration: 0.6s; /* pillars slam-down */
+  --pillars-drop-ease: cubic-bezier(.1,.9,.2,1.2);
   --crown-reveal: 1.8s;
   --crown-float: 3s;
   --text-reveal: 2s;
@@ -55,6 +57,7 @@ body {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  /* starting scale — animations will override when running */
   transform: scale(1.05);
   will-change: opacity, transform;
   z-index: var(--z-bg);
@@ -117,11 +120,16 @@ body {
   box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 25px 40px rgba(0, 0, 0, 0.75);
   overflow: visible;
   border-radius: 8px;
+
+  /* start off-screen and drop in via animation (staggered by side) */
+  transform: translateY(-120%);
+  animation: pillarDrop var(--pillars-drop-duration) var(--pillars-drop-ease) forwards;
+  will-change: transform;
 }
 
 /* Placement */
-.pillar-left { left: 5rem; }
-.pillar-right { right: 5rem; }
+.pillar-left { left: 5rem; animation-delay: calc(var(--fade-duration) - 1.2s); }
+.pillar-right { right: 5rem; animation-delay: calc(var(--fade-duration) - 0.6s); }
 
 /* Toggle button near top — use <button> in markup with aria-expanded, aria-controls */
 .pillar-toggle {
@@ -136,4 +144,65 @@ body {
   color: var(--text-color);
   font: inherit;
   cursor: pointer;
+}
+
+/* Reduced-data should remove pillar animation too */
+.reduced-data .pillar { animation: none !important; transform: none !important; }
+
+/* --- Keyframes for opening sequence and decorative animations --- */
+
+@keyframes fadeOne {
+  0% { opacity: 1; }
+  45% { opacity: 0; }
+  55% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeTwo {
+  0% { opacity: 0; }
+  45% { opacity: 1; }
+  55% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1.12); }
+}
+
+@keyframes crownReveal {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
+  60% { opacity: 1; transform: translateX(-50%) translateY(6px) scale(1.03); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes crownFloat {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes pillarDrop {
+  0% {
+    transform: translateY(-120%);
+  }
+  60% {
+    transform: translateY(8px); /* slight overshoot */
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Accessibility: visible focus for keyboard users */
+.pillar-toggle:focus-visible {
+  outline: 3px solid rgba(255, 213, 111, 0.9);
+  outline-offset: 3px;
+}
+
+/* Small screen adjustments: pillars become smaller and less intrusive */
+@media (max-width: 800px) {
+  .pillar { width: clamp(80px, 22vw, 160px); left: 1rem; right: 1rem; top: 1rem; bottom: auto; height: auto; }
+  .pillar-left { left: 1rem; right: auto; }
+  .pillar-right { right: 1rem; left: auto; }
 }
