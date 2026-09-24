@@ -1,492 +1,94 @@
+html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Round Table Royalty</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Golds 4 Souls - Energy" />
+  <meta name="theme-color" content="#020204" />
+  <title>Golds 4 Souls</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <!-- Mark JavaScript as available before CSS paints the page. -->
+  <script>
+    document.documentElement.classList.replace('no-js', 'js');
+  </script>
 
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #090806;
-    }
-
-    body {
-      min-height: 100dvh;
-
-      background:
-        radial-gradient(
-          circle at 50% 45%,
-          #1a1710 0%,
-          #0d0b08 38%,
-          #050504 100%
-        );
-    }
-
-    /* =========================
-       PILLARS
-       ========================= */
-
-    .pillar {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-
-      width: clamp(60px, 15vw, 200px);
-
-      z-index: 10;
-
-      filter:
-        drop-shadow(0 0 30px rgba(0, 0, 0, 0.85));
-
-      /* Start above the screen */
-      transform: translateY(-110vh);
-
-      animation:
-        pillar-drop
-        1s
-        0.35s
-        cubic-bezier(.2, .8, .25, 1)
-        forwards;
-    }
-
-    .pillar.left {
-      left: 0;
-    }
-
-    .pillar.right {
-      right: 0;
-
-      /* Slightly offset the second pillar */
-      animation-delay: 0.48s;
-    }
-
-    .pillar svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-
-    /* =========================
-       DROP / BOUNCE ANIMATION
-       ========================= */
-
-    @keyframes pillar-drop {
-
-      0% {
-        transform: translateY(-110vh);
-      }
-
-      48% {
-        transform: translateY(0);
-      }
-
-      64% {
-        transform: translateY(-5vh);
-      }
-
-      80% {
-        transform: translateY(0);
-      }
-
-      91% {
-        transform: translateY(-1.2vh);
-      }
-
-      100% {
-        transform: translateY(0);
-      }
-    }
-
-
-    /* Accessibility:
-       Don't animate for people who disable motion.
-    */
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .pillar {
-        animation: none;
-        transform: translateY(0);
-      }
-
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
-
-
 <body>
-
-
-  <!-- =========================
-       LEFT PILLAR
-       ========================= -->
-
-  <div class="pillar left" aria-hidden="true">
-
-    <svg
-      viewBox="0 0 100 800"
-      preserveAspectRatio="none"
-    >
-
-      <defs>
-
-        <linearGradient
-          id="column-left"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="0%"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#171612"
-          />
-
-          <stop
-            offset="50%"
-            stop-color="#302d25"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#171612"
-          />
-
-        </linearGradient>
-
-      </defs>
-
-
-      <!-- Main pillar body -->
-
-      <rect
-        x="15"
-        y="0"
-        width="70"
-        height="800"
-        fill="url(#column-left)"
+  <main class="landing" id="landing">
+    <!--
+      These are real <img> elements instead of CSS background-image URLs on purpose.
+      The browser discovers them immediately, and script.js waits for them to decode
+      before it starts the opening sequence.
+    -->
+    <div class="scene" aria-hidden="true">
+      <img
+        class="scene-image bg-one"
+        src="assets/bt-1.webp"
+        alt=""
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
       />
-
-
-      <!-- Top / bottom blocks -->
-
-      <g
-        fill="#171612"
-        stroke="#8b742d"
-        stroke-width="2"
-      >
-
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="40"
-        />
-
-        <rect
-          x="10"
-          y="60"
-          width="80"
-          height="15"
-        />
-
-        <rect
-          x="0"
-          y="760"
-          width="100"
-          height="40"
-        />
-
-        <rect
-          x="10"
-          y="725"
-          width="80"
-          height="15"
-        />
-
-      </g>
-
-
-      <!-- Decorative bands -->
-
-      <g
-        fill="#302d25"
-        stroke="#8b742d"
-        stroke-width="2"
-      >
-
-        <rect
-          x="5"
-          y="40"
-          width="90"
-          height="20"
-        />
-
-        <rect
-          x="5"
-          y="740"
-          width="90"
-          height="20"
-        />
-
-      </g>
-
-
-      <!-- Vertical grooves -->
-
-      <g
-        stroke="#11100d"
-        stroke-linecap="round"
-      >
-
-        <line
-          x1="25"
-          y1="75"
-          x2="25"
-          y2="725"
-          stroke-width="4"
-        />
-
-        <line
-          x1="40"
-          y1="75"
-          x2="40"
-          y2="725"
-          stroke-width="6"
-        />
-
-        <line
-          x1="60"
-          y1="75"
-          x2="60"
-          y2="725"
-          stroke-width="6"
-        />
-
-        <line
-          x1="75"
-          y1="75"
-          x2="75"
-          y2="725"
-          stroke-width="4"
-        />
-
-      </g>
-
-
-      <!-- Tiny highlights/shadows -->
-
-      <line
-        x1="17"
-        y1="75"
-        x2="17"
-        y2="725"
-        stroke="#ffffff"
-        stroke-width="1"
-        opacity=".05"
+      <img
+        class="scene-image bg-two"
+        src="assets/bt-2.webp"
+        alt=""
+        loading="eager"
+        decoding="async"
       />
-
-      <line
-        x1="83"
-        y1="75"
-        x2="83"
-        y2="725"
-        stroke="#000000"
-        stroke-width="3"
-        opacity=".6"
+      <img
+        class="scene-image bg-final"
+        src="assets/crown.webp"
+        alt=""
+        loading="eager"
+        decoding="async"
       />
+    </div>
 
-    </svg>
+    <div class="vignette" aria-hidden="true"></div>
 
-  </div>
-
-
-
-  <!-- =========================
-       RIGHT PILLAR
-       ========================= -->
-
-  <div class="pillar right" aria-hidden="true">
-
-    <svg
-      viewBox="0 0 100 800"
-      preserveAspectRatio="none"
-    >
-
-      <defs>
-
-        <linearGradient
-          id="column-right"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="0%"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#171612"
-          />
-
-          <stop
-            offset="50%"
-            stop-color="#302d25"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#171612"
-          />
-
-        </linearGradient>
-
-      </defs>
-
-
-      <rect
-        x="15"
-        y="0"
-        width="70"
-        height="800"
-        fill="url(#column-right)"
-      />
-
-
-      <g
-        fill="#171612"
-        stroke="#8b742d"
-        stroke-width="2"
+    <nav class="pillar pillar-left" aria-label="Main menu">
+      <button
+        class="pillar-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-main"
       >
+        Menu
+      </button>
 
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="40"
-        />
+      <div class="dropdown" id="menu-main">
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="projects.html">Projects</a>
+        <a href="music.html">Music</a>
+      </div>
+    </nav>
 
-        <rect
-          x="10"
-          y="60"
-          width="80"
-          height="15"
-        />
-
-        <rect
-          x="0"
-          y="760"
-          width="100"
-          height="40"
-        />
-
-        <rect
-          x="10"
-          y="725"
-          width="80"
-          height="15"
-        />
-
-      </g>
-
-
-      <g
-        fill="#302d25"
-        stroke="#8b742d"
-        stroke-width="2"
+    <nav class="pillar pillar-right" aria-label="Explore menu">
+      <button
+        class="pillar-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-explore"
       >
+        Explore
+      </button>
 
-        <rect
-          x="5"
-          y="40"
-          width="90"
-          height="20"
-        />
+      <div class="dropdown" id="menu-explore">
+        <a href="blog.html">Blog</a>
+        <a href="shakes.html">Shakes</a>
+        <a href="events.html">Events</a>
+        <a href="members.html">Members</a>
+      </div>
+    </nav>
 
-        <rect
-          x="5"
-          y="740"
-          width="90"
-          height="20"
-        />
-
-      </g>
-
-
-      <g
-        stroke="#11100d"
-        stroke-linecap="round"
-      >
-
-        <line
-          x1="25"
-          y1="75"
-          x2="25"
-          y2="725"
-          stroke-width="4"
-        />
-
-        <line
-          x1="40"
-          y1="75"
-          x2="40"
-          y2="725"
-          stroke-width="6"
-        />
-
-        <line
-          x1="60"
-          y1="75"
-          x2="60"
-          y2="725"
-          stroke-width="6"
-        />
-
-        <line
-          x1="75"
-          y1="75"
-          x2="75"
-          y2="725"
-          stroke-width="4"
-        />
-
-      </g>
-
-
-      <line
-        x1="17"
-        y1="75"
-        x2="17"
-        y2="725"
-        stroke="#ffffff"
-        stroke-width="1"
-        opacity=".05"
-      />
-
-      <line
-        x1="83"
-        y1="75"
-        x2="83"
-        y2="725"
-        stroke="#000000"
-        stroke-width="3"
-        opacity=".6"
-      />
-
-    </svg>
-
-  </div>
-
-
+    <section class="hero-text" aria-label="Energy">
+      <h1>E N E R G Y</h1>
+    </section>
+  </main>
 </body>
 </html>
