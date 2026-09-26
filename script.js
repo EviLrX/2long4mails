@@ -1,12 +1,12 @@
 'use strict';
 /**
-* Opening sequence:
-* bt-1 -> bt-2 -> crown.webp -> left pillar -> right pillar -> both menus
-*
-* The sequence does not begin until all three scene images have loaded and
-decoded.
-* CSS handles the actual animation; JavaScript only advances the states.
-*/
+ * Opening sequence:
+ * bt-1 -> bt-2 -> crown.webp -> left pillar -> right pillar -> both menus
+ *
+ * The sequence does not begin until all three scene images have loaded and
+ * decoded.
+ * CSS handles the actual animation; JavaScript only advances the states.
+ */
 document.addEventListener('DOMContentLoaded', () => {
 const landing = document.querySelector('.landing');
 const bgOne = document.querySelector('.bg-one');
@@ -15,18 +15,14 @@ const bgFinal = document.querySelector('.bg-final');
 const leftPillar = document.querySelector('.pillar-left');
 const rightPillar = document.querySelector('.pillar-right');
 const pillars = [...document.querySelectorAll('.pillar')];
-6
-7
-15
+
 if (!landing || !bgOne || !bgTwo || !bgFinal || !leftPillar || !rightPillar) {
-console.error('Opening sequence could not start: required landing-page
-elements are missing.');
+console.error('Opening sequence could not start: required landing-page elements are missing.');
 return;
 }
-const reduceMotion = window.matchMedia('(prefers-reduced-motion:
-reduce)').matches;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // These are intentional pauses, not animation durations. CSS controls fade/
-drop speed.
+// drop speed.
 const TIMING = Object.freeze({
 firstImageHold: 900,
 secondImageHold: 750,
@@ -38,10 +34,10 @@ const wait = (milliseconds) => new Promise((resolve) => {
 window.setTimeout(resolve, milliseconds);
 });
 /**
-* Wait until an <img> is both downloaded and decoded.
-* decode() avoids beginning a fade only to stall on the first frame that
-needs the image.
-*/
+ * Wait until an <img> is both downloaded and decoded.
+ * decode() avoids beginning a fade only to stall on the first frame that
+ * needs the image.
+ */
 const prepareImage = async (image) => {
 if (!(image instanceof HTMLImageElement)) return;
 if (!image.complete) {
@@ -58,21 +54,18 @@ try {
 await image.decode();
 } catch (error) {
 // Some browsers can reject decode() even though the image is already
-renderable.
-16
+// renderable.
 // naturalWidth above is the final sanity check, so this is safe to
-continue from.
-console.warn('Image decode() did not resolve cleanly; continuing with
-loaded image.', error);
+// continue from.
+console.warn('Image decode() did not resolve cleanly; continuing with loaded image.', error);
 }
 }
 };
 /**
-* Resolve when one CSS transition finishes, but include a fallback timer
-because
-* transitionend is not emitted if a transition is cancelled or has zero
-duration.
-*/
+ * Resolve when one CSS transition finishes, but include a fallback timer because
+ * transitionend is not emitted if a transition is cancelled or has zero
+ * duration.
+ */
 const waitForTransition = (element, propertyName, fallbackMs = 3000) => (
 new Promise((resolve) => {
 let settled = false;
@@ -95,14 +88,13 @@ element.addEventListener('transitioncancel', finish, { once: true });
 })
 );
 /**
-* Resolve when the pillar slam animation finishes, with a timeout fallback.
-*/
+ * Resolve when the pillar slam animation finishes, with a timeout fallback.
+ */
 const waitForAnimation = (element, animationName, fallbackMs = 1200) => (
 new Promise((resolve) => {
 let settled = false;
 const finish = () => {
 if (settled) return;
-17
 settled = true;
 window.clearTimeout(timerId);
 element.removeEventListener('animationend', onEnd);
@@ -124,7 +116,6 @@ button?.setAttribute('aria-expanded', String(open));
 };
 const finishImmediately = () => {
 // Prefer crown.webp, then bt-2, then bt-1 if an asset failed. This prevents
-a
 // missing final image from turning the entire landing page black.
 const fallbackImage = [bgFinal, bgTwo, bgOne].find((image) =>
 image.naturalWidth > 0);
@@ -142,20 +133,18 @@ leftPillar.classList.add('landed');
 rightPillar.classList.add('landed');
 pillars.forEach((pillar) => setPillarOpen(pillar, true));
 };
-18
+
 const runOpeningSequence = async () => {
 try {
 // Wait for only the images this sequence actually needs. Using
-window.load would
-// unnecessarily wait for every unrelated page resource.
+// window.load would unnecessarily wait for every unrelated page resource.
 await Promise.all([
 prepareImage(bgOne),
 prepareImage(bgTwo),
 prepareImage(bgFinal),
 ]);
 } catch (error) {
-console.error('A critical opening image did not load. Showing the final
-layout instead.', error);
+console.error('A critical opening image did not load. Showing the final layout instead.', error);
 finishImmediately();
 return;
 }
@@ -181,7 +170,6 @@ leftPillar.classList.add('landed');
 await leftLanded;
 await wait(TIMING.betweenPillars);
 // Right pillar slams down.
-19
 const rightLanded = waitForAnimation(rightPillar, 'pillar-slam');
 rightPillar.classList.add('landed');
 await rightLanded;

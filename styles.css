@@ -1,395 +1,384 @@
-:root {
---bg-color: #020204;
---text-color: #f4e7c1;
---muted-text: #cdbb91;
---accent: #ffd56f;
---panel-border: rgba(218, 180, 91, 0.52);
---scene-fade: 2200ms;
---scene-ease: cubic-bezier(.45, 0, .2, 1);
---pillar-drop: 580ms;
---pillar-ease: cubic-bezier(.16, .9, .25, 1.12);
---menu-drop: 520ms;
---pillar-width: clamp(108px, 14vw, 210px);
-5
-5
---pillar-edge: clamp(0.75rem, 4vw, 5rem);
-}
-* {
-box-sizing: border-box;
-}
-html,
-body {
-margin: 0;
-min-height: 100%;
-background: var(--bg-color);
-}
-body {
-color: var(--text-color);
-font-family: Georgia, "Times New Roman", serif;
-}
-button,
-a {
-font: inherit;
-}
-.landing {
-position: relative;
-width: 100%;
-height: 100vh;
-height: 100svh;
-height: 100dvh;
-overflow: hidden;
-isolation: isolate;
-background: var(--bg-color);
-}
-/* ---------- Opening scene ---------- */
-.scene {
-position: absolute;
-inset: 0;
-z-index: 0;
-overflow: hidden;
-background: var(--bg-color);
-}
-.scene-image {
-position: absolute;
-inset: -2%;
-6
-width: 104%;
-height: 104%;
-object-fit: cover;
-object-position: center;
-user-select: none;
--webkit-user-drag: none;
-pointer-events: none;
-opacity: 0;
-transform: scale(1.025);
-transition: opacity var(--scene-fade) var(--scene-ease);
-}
-/* bt-1 is the thing the visitor sees while the other critical images finish
-loading. */
-.bg-one {
-opacity: 1;
-}
-.bg-two,
-.bg-final {
-opacity: 0;
-}
-/* JS adds these state classes only after all three images are loaded and
-decoded. */
-.intro-running .scene-image {
-will-change: opacity, transform;
-}
-.intro-running .bg-one,
-.intro-running .bg-two {
-animation: slow-zoom 8s ease-out both;
-}
-.show-two .bg-one {
-opacity: 0;
-}
-.show-two .bg-two {
-opacity: 1;
-}
-.show-final .bg-two {
-opacity: 0;
-}
-.show-final .bg-final {
-opacity: 1;
-7
-}
-/* Once the intro is over, stop reserving compositor resources for old layers.
-*/
-.intro-complete .scene-image {
-transition: none;
-will-change: auto;
-}
-.intro-complete .bg-one,
-.intro-complete .bg-two {
-visibility: hidden;
-}
-.vignette {
-position: absolute;
-inset: 0;
-z-index: 1;
-pointer-events: none;
-background:
-radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.30) 54%,
-rgba(0, 0, 0, 0.82) 100%),
-linear-gradient(to bottom, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.66));
-}
-@keyframes slow-zoom {
-from { transform: scale(1.025); }
-to { transform: scale(1.085); }
-}
-/* ---------- Pillars ---------- */
-.pillar {
-position: absolute;
-top: 1.1rem;
-bottom: 1.1rem;
-width: var(--pillar-width);
-z-index: 4;
-overflow: visible;
-background:
-linear-gradient(90deg,
-rgba(7, 7, 9, 0.98) 0%,
-rgba(31, 27, 22, 0.98) 24%,
-rgba(57, 48, 34, 0.98) 49%,
-rgba(27, 24, 21, 0.98) 73%,
-rgba(7, 7, 9, 0.98) 100%),
-repeating-linear-gradient(
-8
-to bottom,
-rgba(255,255,255,0.035) 0 2px,
-transparent 2px 20px
-);
-border: 2px solid var(--panel-border);
-border-radius: 5px;
-box-shadow:
-inset 0 0 38px rgba(0, 0, 0, 0.88),
-0 18px 40px rgba(0, 0, 0, 0.68);
-transform: translate3d(0, calc(-100% - 4rem), 0);
-}
-.pillar::before,
-.pillar::after {
-content: "";
-position: absolute;
-left: 50%;
-width: calc(100% + clamp(18px, 2.4vw, 34px));
-height: clamp(28px, 5.8vh, 54px);
-transform: translateX(-50%);
-border: 2px solid rgba(218, 180, 91, 0.56);
-background:
-linear-gradient(90deg,
-#09090b 0%,
-#322b22 24%,
-#66563a 50%,
-#2b261f 76%,
-#09090b 100%);
-box-shadow:
-inset 0 0 18px rgba(0, 0, 0, 0.82),
-0 8px 20px rgba(0, 0, 0, 0.42);
-}
-.pillar::before {
-top: -1px;
-transform: translate(-50%, -32%);
-border-radius: 7px 7px 2px 2px;
-}
-.pillar::after {
-bottom: -1px;
-transform: translate(-50%, 32%);
-border-radius: 2px 2px 7px 7px;
-}
-.pillar-left {
-9
-left: var(--pillar-edge);
-}
-.pillar-right {
-right: var(--pillar-edge);
-}
-.pillar.landed {
-animation: pillar-slam var(--pillar-drop) var(--pillar-ease) forwards;
-}
-@keyframes pillar-slam {
-0% {
-transform: translate3d(0, calc(-100% - 4rem), 0);
-}
-72% {
-transform: translate3d(0, 12px, 0);
-}
-88% {
-transform: translate3d(0, -4px, 0);
-}
-100% {
-transform: translate3d(0, 0, 0);
-}
-}
-/* ---------- Menu controls ---------- */
-.pillar-toggle {
-position: absolute;
-top: clamp(4.3rem, 12vh, 7.4rem);
-left: 50%;
-width: 80%;
-transform: translateX(-50%);
-z-index: 2;
-padding: 0.65rem 0.35rem;
-border: 0;
-border-bottom: 1px solid rgba(255, 213, 111, 0.44);
-background: transparent;
-color: var(--text-color);
-font-size: clamp(0.82rem, 1.5vw, 1.08rem);
-font-weight: 700;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-text-shadow: 0 2px 8px #000;
-cursor: pointer;
-10
-}
-.pillar-toggle::after {
-content: "⌄";
-display: block;
-margin-top: 0.2rem;
-font-size: 0.9em;
-transition: transform 220ms ease;
-}
-.pillar.open .pillar-toggle::after {
-transform: rotate(180deg);
-}
-.pillar-toggle:focus-visible,
-.dropdown a:focus-visible {
-outline: 3px solid rgba(255, 213, 111, 0.92);
-outline-offset: 3px;
-}
-.dropdown {
-position: absolute;
-top: clamp(8.4rem, 22vh, 12.5rem);
-left: 50%;
-width: 76%;
-z-index: 1;
-display: grid;
-gap: clamp(0.7rem, 2.1vh, 1.25rem);
-padding: 0.8rem 0.25rem 1rem;
-opacity: 0;
-visibility: hidden;
-pointer-events: none;
-transform: translate(-50%, -26px) scaleY(0.90);
-transform-origin: top center;
-transition:
-opacity 260ms ease,
-transform var(--menu-drop) cubic-bezier(.14,.76,.22,1.08),
-visibility 0s linear var(--menu-drop);
-}
-.pillar.open .dropdown {
-opacity: 1;
-visibility: visible;
-pointer-events: auto;
-transform: translate(-50%, 0) scaleY(1);
-transition-delay: 0s;
-11
-}
-.dropdown a {
-display: block;
-padding: 0.48rem 0.15rem;
-color: var(--muted-text);
-text-align: center;
-text-decoration: none;
-font-size: clamp(0.76rem, 1.3vw, 0.98rem);
-letter-spacing: 0.07em;
-text-shadow: 0 2px 8px #000;
-transition: color 180ms ease, transform 180ms ease;
-}
-.dropdown a:hover,
-.dropdown a:focus-visible {
-color: var(--accent);
-transform: translateY(-1px);
-}
-/* ---------- Center title ---------- */
-.hero-text {
-position: absolute;
-left: 50%;
-bottom: clamp(7%, 10vh, 12%);
-z-index: 3;
-width: min(68vw, 860px);
-transform: translate(-50%, 18px);
-opacity: 0;
-text-align: center;
-pointer-events: none;
-transition: opacity 900ms ease, transform 900ms ease;
-}
-.intro-complete .hero-text {
-opacity: 1;
-transform: translate(-50%, 0);
-}
-.hero-text h1 {
-margin: 0;
-color: var(--text-color);
-font-size: clamp(1.3rem, 4.3vw, 3.5rem);
-font-weight: 400;
-letter-spacing: clamp(0.28rem, 1.35vw, 1.15rem);
-text-indent: clamp(0.28rem, 1.35vw, 1.15rem);
-text-shadow: 0 3px 18px rgba(0, 0, 0, 0.96);
-12
-}
-/* ---------- Responsive adjustments ---------- */
-@media (max-width: 800px) {
-:root {
---pillar-width: clamp(88px, 22vw, 132px);
---pillar-edge: clamp(0.6rem, 2.5vw, 1.25rem);
-}
-.pillar {
-top: 0.85rem;
-bottom: 0.85rem;
-}
-.pillar-toggle {
-top: clamp(4rem, 11vh, 6.3rem);
-width: 84%;
-font-size: clamp(0.72rem, 2.5vw, 0.92rem);
-}
-.dropdown {
-top: clamp(7.8rem, 20vh, 10.4rem);
-width: 84%;
-gap: clamp(0.55rem, 1.8vh, 0.9rem);
-}
-.dropdown a {
-font-size: clamp(0.68rem, 2.2vw, 0.84rem);
-letter-spacing: 0.035em;
-}
-.hero-text {
-width: 56vw;
-}
-}
-@media (max-width: 520px) {
-:root {
---pillar-width: clamp(76px, 23vw, 104px);
---pillar-edge: 0.4rem;
-}
-.pillar::before,
-.pillar::after {
-width: calc(100% + 14px);
-}
-13
-.pillar-toggle {
-width: 90%;
-letter-spacing: 0.06em;
-}
-.dropdown {
-width: 92%;
-}
-.hero-text {
-width: 48vw;
-}
-}
-/* ---------- No-JS and reduced-motion fallbacks ---------- */
-.no-js .bg-one,
-.no-js .bg-two {
-opacity: 0;
-visibility: hidden;
-}
-.no-js .bg-final {
-opacity: 1;
-}
-.no-js .pillar {
-transform: translate3d(0, 0, 0);
-}
-.no-js .dropdown {
-opacity: 1;
-visibility: visible;
-pointer-events: auto;
-transform: translate(-50%, 0) scaleY(1);
-}
-.no-js .hero-text {
-opacity: 1;
-transform: translate(-50%, 0);
-}
-@media (prefers-reduced-motion: reduce) {
-.scene-image,
-.dropdown,
-.pillar-toggle::after,
-.hero-text,
-.dropdown a {
-14
-transition-duration: 0.01ms !important;
-animation-duration: 0.01ms !important;
-animation-iteration-count: 1 !important;
-}
-.scene-image {
-transform: none;
-}
-}
+ :root {
+ --bg-color: #020204;
+ --text-color: #f4e7c1;
+ --muted-text: #cdbb91;
+ --accent: #ffd56f;
+ --panel-border: rgba(218, 180, 91, 0.52);
+ --scene-fade: 2200ms;
+ --scene-ease: cubic-bezier(.45, 0, .2, 1);
+ --pillar-drop: 580ms;
+ --pillar-ease: cubic-bezier(.16, .9, .25, 1.12);
+ --menu-drop: 520ms;
+ --pillar-width: clamp(108px, 14vw, 210px);
+ --pillar-edge: clamp(0.75rem, 4vw, 5rem);
+ }
+ * {
+ box-sizing: border-box;
+ }
+ html,
+ body {
+ margin: 0;
+ min-height: 100%;
+ background: var(--bg-color);
+ }
+ body {
+ color: var(--text-color);
+ font-family: Georgia, "Times New Roman", serif;
+ }
+ button,
+ a {
+ font: inherit;
+ }
+ .landing {
+ position: relative;
+ width: 100%;
+ height: 100vh;
+ height: 100svh;
+ height: 100dvh;
+ overflow: hidden;
+ isolation: isolate;
+ background: var(--bg-color);
+ }
+ /* ---------- Opening scene ---------- */
+ .scene {
+ position: absolute;
+ inset: 0;
+ z-index: 0;
+ overflow: hidden;
+ background: var(--bg-color);
+ }
+ .scene-image {
+ position: absolute;
+ inset: -2%;
+ width: 104%;
+ height: 104%;
+ object-fit: cover;
+ object-position: center;
+ user-select: none;
+ -webkit-user-drag: none;
+ pointer-events: none;
+ opacity: 0;
+ transform: scale(1.025);
+ transition: opacity var(--scene-fade) var(--scene-ease);
+ }
+ /* bt-1 is the thing the visitor sees while the other critical images finish
+ loading. */
+ .bg-one {
+ opacity: 1;
+ }
+ .bg-two,
+ .bg-final {
+ opacity: 0;
+ }
+ /* JS adds these state classes only after all three images are loaded and
+ decoded. */
+ .intro-running .scene-image {
+ will-change: opacity, transform;
+ }
+ .intro-running .bg-one,
+ .intro-running .bg-two {
+ animation: slow-zoom 8s ease-out both;
+ }
+ .show-two .bg-one {
+ opacity: 0;
+ }
+ .show-two .bg-two {
+ opacity: 1;
+ }
+ .show-final .bg-two {
+ opacity: 0;
+ }
+ .show-final .bg-final {
+ opacity: 1;
+ }
+ /* Once the intro is over, stop reserving compositor resources for old layers.
+ */
+ .intro-complete .scene-image {
+ transition: none;
+ will-change: auto;
+ }
+ .intro-complete .bg-one,
+ .intro-complete .bg-two {
+ visibility: hidden;
+ }
+ .vignette {
+ position: absolute;
+ inset: 0;
+ z-index: 1;
+ pointer-events: none;
+ background:
+ radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.30) 54%,
+ rgba(0, 0, 0, 0.82) 100%),
+ linear-gradient(to bottom, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.66));
+ }
+ @keyframes slow-zoom {
+ from { transform: scale(1.025); }
+ to { transform: scale(1.085); }
+ }
+ /* ---------- Pillars ---------- */
+ .pillar {
+ position: absolute;
+ top: 1.1rem;
+ bottom: 1.1rem;
+ width: var(--pillar-width);
+ z-index: 4;
+ overflow: visible;
+ background:
+ linear-gradient(90deg,
+ rgba(7, 7, 9, 0.98) 0%,
+ rgba(31, 27, 22, 0.98) 24%,
+ rgba(57, 48, 34, 0.98) 49%,
+ rgba(27, 24, 21, 0.98) 73%,
+ rgba(7, 7, 9, 0.98) 100%),
+ repeating-linear-gradient(
+ to bottom,
+ rgba(255,255,255,0.035) 0 2px,
+ transparent 2px 20px
+ );
+ border: 2px solid var(--panel-border);
+ border-radius: 5px;
+ box-shadow:
+ inset 0 0 38px rgba(0, 0, 0, 0.88),
+ 0 18px 40px rgba(0, 0, 0, 0.68);
+ transform: translate3d(0, calc(-100% - 4rem), 0);
+ }
+ .pillar::before,
+ .pillar::after {
+ content: "";
+ position: absolute;
+ left: 50%;
+ width: calc(100% + clamp(18px, 2.4vw, 34px));
+ height: clamp(28px, 5.8vh, 54px);
+ transform: translateX(-50%);
+ border: 2px solid rgba(218, 180, 91, 0.56);
+ background:
+ linear-gradient(90deg,
+ #09090b 0%,
+ #322b22 24%,
+ #66563a 50%,
+ #2b261f 76%,
+ #09090b 100%);
+ box-shadow:
+ inset 0 0 18px rgba(0, 0, 0, 0.82),
+ 0 8px 20px rgba(0, 0, 0, 0.42);
+ }
+ .pillar::before {
+ top: -1px;
+ transform: translate(-50%, -32%);
+ border-radius: 7px 7px 2px 2px;
+ }
+ .pillar::after {
+ bottom: -1px;
+ transform: translate(-50%, 32%);
+ border-radius: 2px 2px 7px 7px;
+ }
+ .pillar-left {
+ left: var(--pillar-edge);
+ }
+ .pillar-right {
+ right: var(--pillar-edge);
+ }
+ .pillar.landed {
+ animation: pillar-slam var(--pillar-drop) var(--pillar-ease) forwards;
+ }
+ @keyframes pillar-slam {
+ 0% {
+ transform: translate3d(0, calc(-100% - 4rem), 0);
+ }
+ 72% {
+ transform: translate3d(0, 12px, 0);
+ }
+ 88% {
+ transform: translate3d(0, -4px, 0);
+ }
+ 100% {
+ transform: translate3d(0, 0, 0);
+ }
+ }
+ /* ---------- Menu controls ---------- */
+ .pillar-toggle {
+ position: absolute;
+ top: clamp(4.3rem, 12vh, 7.4rem);
+ left: 50%;
+ width: 80%;
+ transform: translateX(-50%);
+ z-index: 2;
+ padding: 0.65rem 0.35rem;
+ border: 0;
+ border-bottom: 1px solid rgba(255, 213, 111, 0.44);
+ background: transparent;
+ color: var(--text-color);
+ font-size: clamp(0.82rem, 1.5vw, 1.08rem);
+ font-weight: 700;
+ letter-spacing: 0.12em;
+ text-transform: uppercase;
+ text-shadow: 0 2px 8px #000;
+ cursor: pointer;
+ }
+ .pillar-toggle::after {
+ content: "⌄";
+ display: block;
+ margin-top: 0.2rem;
+ font-size: 0.9em;
+ transition: transform 220ms ease;
+ }
+ .pillar.open .pillar-toggle::after {
+ transform: rotate(180deg);
+ }
+ .pillar-toggle:focus-visible,
+ .dropdown a:focus-visible {
+ outline: 3px solid rgba(255, 213, 111, 0.92);
+ outline-offset: 3px;
+ }
+ .dropdown {
+ position: absolute;
+ top: clamp(8.4rem, 22vh, 12.5rem);
+ left: 50%;
+ width: 76%;
+ z-index: 1;
+ display: grid;
+ gap: clamp(0.7rem, 2.1vh, 1.25rem);
+ padding: 0.8rem 0.25rem 1rem;
+ opacity: 0;
+ visibility: hidden;
+ pointer-events: none;
+ transform: translate(-50%, -26px) scaleY(0.90);
+ transform-origin: top center;
+ transition:
+ opacity 260ms ease,
+ transform var(--menu-drop) cubic-bezier(.14,.76,.22,1.08),
+ visibility 0s linear var(--menu-drop);
+ }
+ .pillar.open .dropdown {
+ opacity: 1;
+ visibility: visible;
+ pointer-events: auto;
+ transform: translate(-50%, 0) scaleY(1);
+ transition-delay: 0s;
+ }
+ .dropdown a {
+ display: block;
+ padding: 0.48rem 0.15rem;
+ color: var(--muted-text);
+ text-align: center;
+ text-decoration: none;
+ font-size: clamp(0.76rem, 1.3vw, 0.98rem);
+ letter-spacing: 0.07em;
+ text-shadow: 0 2px 8px #000;
+ transition: color 180ms ease, transform 180ms ease;
+ }
+ .dropdown a:hover,
+ .dropdown a:focus-visible {
+ color: var(--accent);
+ transform: translateY(-1px);
+ }
+ /* ---------- Center title ---------- */
+ .hero-text {
+ position: absolute;
+ left: 50%;
+ bottom: clamp(7%, 10vh, 12%);
+ z-index: 3;
+ width: min(68vw, 860px);
+ transform: translate(-50%, 18px);
+ opacity: 0;
+ text-align: center;
+ pointer-events: none;
+ transition: opacity 900ms ease, transform 900ms ease;
+ }
+ .intro-complete .hero-text {
+ opacity: 1;
+ transform: translate(-50%, 0);
+ }
+ .hero-text h1 {
+ margin: 0;
+ color: var(--text-color);
+ font-size: clamp(1.3rem, 4.3vw, 3.5rem);
+ font-weight: 400;
+ letter-spacing: clamp(0.28rem, 1.35vw, 1.15rem);
+ text-indent: clamp(0.28rem, 1.35vw, 1.15rem);
+ text-shadow: 0 3px 18px rgba(0, 0, 0, 0.96);
+ }
+ /* ---------- Responsive adjustments ---------- */
+ @media (max-width: 800px) {
+ :root {
+ --pillar-width: clamp(88px, 22vw, 132px);
+ --pillar-edge: clamp(0.6rem, 2.5vw, 1.25rem);
+ }
+ .pillar {
+ top: 0.85rem;
+ bottom: 0.85rem;
+ }
+ .pillar-toggle {
+ top: clamp(4rem, 11vh, 6.3rem);
+ width: 84%;
+ font-size: clamp(0.72rem, 2.5vw, 0.92rem);
+ }
+ .dropdown {
+ top: clamp(7.8rem, 20vh, 10.4rem);
+ width: 84%;
+ gap: clamp(0.55rem, 1.8vh, 0.9rem);
+ }
+ .dropdown a {
+ font-size: clamp(0.68rem, 2.2vw, 0.84rem);
+ letter-spacing: 0.035em;
+ }
+ .hero-text {
+ width: 56vw;
+ }
+ }
+ @media (max-width: 520px) {
+ :root {
+ --pillar-width: clamp(76px, 23vw, 104px);
+ --pillar-edge: 0.4rem;
+ }
+ .pillar::before,
+ .pillar::after {
+ width: calc(100% + 14px);
+ }
+ .pillar-toggle {
+ width: 90%;
+ letter-spacing: 0.06em;
+ }
+ .dropdown {
+ width: 92%;
+ }
+ .hero-text {
+ width: 48vw;
+ }
+ }
+ /* ---------- No-JS and reduced-motion fallbacks ---------- */
+ .no-js .bg-one,
+ .no-js .bg-two {
+ opacity: 0;
+ visibility: hidden;
+ }
+ .no-js .bg-final {
+ opacity: 1;
+ }
+ .no-js .pillar {
+ transform: translate3d(0, 0, 0);
+ }
+ .no-js .dropdown {
+ opacity: 1;
+ visibility: visible;
+ pointer-events: auto;
+ transform: translate(-50%, 0) scaleY(1);
+ }
+ .no-js .hero-text {
+ opacity: 1;
+ transform: translate(-50%, 0);
+ }
+ @media (prefers-reduced-motion: reduce) {
+ .scene-image,
+ .dropdown,
+ .pillar-toggle::after,
+ .hero-text,
+ .dropdown a {
+ transition-duration: 0.01ms !important;
+ animation-duration: 0.01ms !important;
+ animation-iteration-count: 1 !important;
+ }
+ .scene-image {
+ transform: none;
+ }
+ }
