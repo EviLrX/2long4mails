@@ -61,14 +61,35 @@ console.warn('Image decode() did not resolve cleanly; continuing with loaded ima
 }
 }
 };
+const maxCssTime = (value) => {
+if (!value) return 0;
+return Math.max(...value.split(',').map((part) => {
+const time = part.trim();
+if (time.endsWith('ms')) return Number.parseFloat(time) || 0;
+if (time.endsWith('s')) return (Number.parseFloat(time) || 0) * 1000;
+return 0;
+}));
+};
+const forceLayout = (element) => {
+void element.offsetWidth;
+};
 /**
- * Resolve when one CSS transition finishes, but include a fallback timer because
- * transitionend is not emitted if a transition is cancelled or has zero
- * duration.
+ * Resolve when one CSS transition finishes. The computed CSS duration is used
+ * to choose a short fallback, while the explicit fallback remains important
+ * when a property does not actually change or a browser suppresses events.
  */
 const waitForTransition = (element, propertyName, fallbackMs = 3000) => (
 new Promise((resolve) => {
+if (!element) {
+resolve();
+return;
+}
+const computed = window.getComputedStyle(element);
+const duration = maxCssTime(computed.transitionDuration);
+const delay = maxCssTime(computed.transitionDelay);
+const timeout = duration > 0 ? duration + delay + 120 : fallbackMs;
 let settled = false;
+let timerId;
 const finish = () => {
 if (settled) return;
 settled = true;
@@ -78,35 +99,48 @@ element.removeEventListener('transitioncancel', finish);
 resolve();
 };
 const onEnd = (event) => {
-if (event.target === element && event.propertyName === propertyName) {
+if (event.target === element && (!propertyName || event.propertyName === propertyName)) {
 finish();
 }
 };
-const timerId = window.setTimeout(finish, fallbackMs);
+timerId = window.setTimeout(finish, timeout);
 element.addEventListener('transitionend', onEnd);
 element.addEventListener('transitioncancel', finish, { once: true });
 })
 );
 /**
- * Resolve when the pillar slam animation finishes, with a timeout fallback.
+ * Resolve when the pillar slam animation finishes. The helper is called before
+ * the .landed class is added, so it deliberately uses the fallback when no
+ * animation duration is active yet instead of resolving immediately.
  */
 const waitForAnimation = (element, animationName, fallbackMs = 1200) => (
 new Promise((resolve) => {
+if (!element) {
+resolve();
+return;
+}
+const computed = window.getComputedStyle(element);
+const duration = maxCssTime(computed.animationDuration);
+const delay = maxCssTime(computed.animationDelay);
+const timeout = duration > 0 ? duration + delay + 120 : fallbackMs;
 let settled = false;
+let timerId;
 const finish = () => {
 if (settled) return;
 settled = true;
 window.clearTimeout(timerId);
 element.removeEventListener('animationend', onEnd);
+element.removeEventListener('animationcancel', finish);
 resolve();
 };
 const onEnd = (event) => {
-if (event.target === element && event.animationName === animationName) {
+if (event.target === element && (!animationName || event.animationName === animationName)) {
 finish();
 }
 };
-const timerId = window.setTimeout(finish, fallbackMs);
+timerId = window.setTimeout(finish, timeout);
 element.addEventListener('animationend', onEnd);
+element.addEventListener('animationcancel', finish);
 })
 );
 const setPillarOpen = (pillar, open) => {
@@ -156,21 +190,25 @@ landing.classList.add('intro-running');
 await wait(TIMING.firstImageHold);
 // bt-1 -> bt-2
 const secondImageVisible = waitForTransition(bgTwo, 'opacity');
+forceLayout(bgTwo);
 landing.classList.add('show-two');
 await secondImageVisible;
 await wait(TIMING.secondImageHold);
 // bt-2 -> crown.webp wallpaper
 const finalImageVisible = waitForTransition(bgFinal, 'opacity');
+forceLayout(bgFinal);
 landing.classList.add('show-final');
 await finalImageVisible;
 await wait(TIMING.finalImageHold);
 // Left pillar slams down.
 const leftLanded = waitForAnimation(leftPillar, 'pillar-slam');
+forceLayout(leftPillar);
 leftPillar.classList.add('landed');
 await leftLanded;
 await wait(TIMING.betweenPillars);
 // Right pillar slams down.
 const rightLanded = waitForAnimation(rightPillar, 'pillar-slam');
+forceLayout(rightPillar);
 rightPillar.classList.add('landed');
 await rightLanded;
 await wait(TIMING.beforeMenus);
