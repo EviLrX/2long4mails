@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const TIMING = Object.freeze({
     firstImageHold: 900,
-    secondImageHold: 750,
-    finalImageHold: 350,
-    betweenPillars: 140,
-    beforeMenus: 140,
+    secondImageHold: 1200,
+    finalImageHold: 1200,
+    betweenPillars: 180,
+    beforeMenus: 180,
   });
 
   const wait = (milliseconds) => new Promise((resolve) => {
