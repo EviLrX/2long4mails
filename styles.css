@@ -6,7 +6,7 @@
 --panel-border: rgba(218, 180, 91, 0.52);
 --scene-fade: 2200ms;
 --scene-ease: cubic-bezier(.45, 0, .2, 1);
---pillar-drop: 580ms;
+--pillar-drop: 1000ms;
 --pillar-ease: cubic-bezier(.16, .9, .25, 1.12);
 --pillar-fade-in: 1800ms;
 --menu-drop: 520ms;
@@ -60,7 +60,7 @@ user-select: none;
 pointer-events: none;
 opacity: 0;
 transform: scale(1.025);
-transition: opacity var(--scene-fade) var(--scene-ease);
+transition: opacity 1200ms ease-in-out;
 }
 /* bt-1 is the thing the visitor sees while the other critical images finish
 loading. */
@@ -132,6 +132,11 @@ background-color: rgba(7, 7, 9, 0.98);
 background-blend-mode: multiply;
 opacity: 0;
 transform: translate3d(0, calc(-100% - 4rem), 0);
+border: 2px solid var(--panel-border);
+border-radius: 5px;
+box-shadow:
+inset 0 0 38px rgba(0, 0, 0, 0.88),
+0 18px 40px rgba(0, 0, 0, 0.68);
 }
 .pillar::before {
 content: "";
@@ -191,7 +196,7 @@ animation-timeline: auto;
 transform: translate3d(0, calc(-100% - 4rem), 0);
 opacity: 0;
 }
-28% {
+20% {
 opacity: 1;
 }
 72% {
@@ -206,13 +211,6 @@ opacity: 1;
 transform: translate3d(0, 0, 0);
 opacity: 1;
 }
-}
-.pillar::before,
-.pillar::after {
-position: absolute;
-left: 50%;
-width: calc(100% + clamp(18px, 2.4vw, 34px));
-height: clamp(28px, 5.8vh, 54px);
 }
 /* ---------- Menu controls ---------- */
 .pillar-toggle {
