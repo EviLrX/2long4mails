@@ -4,8 +4,8 @@
   --muted-text: #cdbb91;
   --accent: #ffd56f;
   --panel-border: rgba(218, 180, 91, 0.52);
-  --scene-fade: 1400ms;
-  --scene-ease: cubic-bezier(.22, .8, .22, 1);
+  --scene-fade: 2200ms;
+  --scene-ease: ease-in-out;
   --pillar-drop: 1100ms;
   --pillar-ease: cubic-bezier(.16, .9, .25, 1.12);
   --menu-drop: 520ms;
@@ -13,9 +13,7 @@
   --pillar-edge: clamp(0.75rem, 4vw, 5rem);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html,
 body {
@@ -30,9 +28,7 @@ body {
 }
 
 button,
-a {
-  font: inherit;
-}
+a { font: inherit; }
 
 .landing {
   position: relative;
@@ -51,21 +47,26 @@ a {
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  display: grid;
+  place-items: center;
   background: var(--bg-color);
 }
 
 .scene-image {
   position: absolute;
-  inset: -2%;
-  width: 104%;
-  height: 104%;
-  object-fit: cover;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
   object-position: center;
+  transform: translate(-50%, -50%);
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
   opacity: 0;
-  transform: scale(1.025);
   transition: opacity var(--scene-fade) var(--scene-ease);
 }
 
@@ -73,29 +74,16 @@ a {
 .bg-two,
 .bg-final { opacity: 0; }
 
+/* Keep the image centered and still; the previous slow-zoom animation
+   overrode the centering transform and made the artwork appear cropped. */
 .intro-running .scene-image {
-  will-change: opacity, transform;
-}
-
-.intro-running .bg-one,
-.intro-running .bg-two {
-  animation: slow-zoom 8s ease-out both;
+  will-change: opacity;
 }
 
 .show-two .bg-one { opacity: 0; }
 .show-two .bg-two { opacity: 1; }
 .show-final .bg-two { opacity: 0; }
 .show-final .bg-final { opacity: 1; }
-
-.intro-complete .scene-image {
-  transition: none;
-  will-change: auto;
-}
-
-.intro-complete .bg-one,
-.intro-complete .bg-two {
-  visibility: hidden;
-}
 
 .vignette {
   position: absolute;
@@ -107,11 +95,6 @@ a {
     linear-gradient(to bottom, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.66));
 }
 
-@keyframes slow-zoom {
-  from { transform: scale(1.025); }
-  to { transform: scale(1.085); }
-}
-
 /* ---------- Pillars ---------- */
 .pillar {
   position: absolute;
@@ -120,28 +103,28 @@ a {
   width: var(--pillar-width);
   z-index: 4;
   overflow: visible;
-  background:
-    linear-gradient(90deg,
-      rgba(7, 7, 9, 0.98) 0%,
-      rgba(31, 27, 22, 0.98) 24%,
-      rgba(57, 48, 34, 0.98) 49%,
-      rgba(27, 24, 21, 0.98) 73%,
-      rgba(7, 7, 9, 0.98) 100%
-    ),
-    url('assets/pill-bk.webp'),
+  background-image:
     repeating-linear-gradient(
       to bottom,
-      rgba(255,255,255,0.035) 0 2px,
+      rgba(255, 255, 255, 0.035) 0 2px,
       transparent 2px 20px
-    );
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-size: cover, cover, auto;
+    ),
+    linear-gradient(90deg,
+      rgba(7, 7, 9, 0.36) 0%,
+      rgba(31, 27, 22, 0.34) 24%,
+      rgba(57, 48, 34, 0.34) 49%,
+      rgba(27, 24, 21, 0.34) 73%,
+      rgba(7, 7, 9, 0.46) 100%
+    ),
+    url("assets/pill-bk.webp");
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-size: auto, cover, cover;
   background-position: center, center, center;
-  background-blend-mode: multiply, multiply, normal;
+  background-blend-mode: normal, multiply, normal;
   border: 2px solid var(--panel-border);
   border-radius: 5px;
   box-shadow:
-    inset 0 0 38px rgba(0, 0, 0, 0.88),
+    inset 0 0 38px rgba(0, 0, 0, 0.58),
     0 18px 40px rgba(0, 0, 0, 0.68);
   transform: translate3d(0, calc(-100% - 4rem), 0);
 }
@@ -188,18 +171,10 @@ a {
 }
 
 @keyframes pillar-slam {
-  0% {
-    transform: translate3d(0, calc(-100% - 4rem), 0);
-  }
-  72% {
-    transform: translate3d(0, 12px, 0);
-  }
-  88% {
-    transform: translate3d(0, -4px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
+  0% { transform: translate3d(0, calc(-100% - 4rem), 0); }
+  72% { transform: translate3d(0, 12px, 0); }
+  88% { transform: translate3d(0, -4px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 /* ---------- Menu controls ---------- */
@@ -231,9 +206,7 @@ a {
   transition: transform 220ms ease;
 }
 
-.pillar.open .pillar-toggle::after {
-  transform: rotate(180deg);
-}
+.pillar.open .pillar-toggle::after { transform: rotate(180deg); }
 
 .pillar-toggle:focus-visible,
 .dropdown a:focus-visible {
@@ -257,7 +230,7 @@ a {
   transform-origin: top center;
   transition:
     opacity 260ms ease,
-    transform var(--menu-drop) cubic-bezier(.14,.76,.22,1.08),
+    transform var(--menu-drop) cubic-bezier(.14, .76, .22, 1.08),
     visibility 0s linear var(--menu-drop);
 }
 
@@ -323,31 +296,22 @@ a {
     --pillar-edge: clamp(0.6rem, 2.5vw, 1.25rem);
   }
 
-  .pillar {
-    top: 0.85rem;
-    bottom: 0.85rem;
-  }
-
+  .pillar { top: 0.85rem; bottom: 0.85rem; }
   .pillar-toggle {
     top: clamp(4rem, 11vh, 6.3rem);
     width: 84%;
     font-size: clamp(0.72rem, 2.5vw, 0.92rem);
   }
-
   .dropdown {
     top: clamp(7.8rem, 20vh, 10.4rem);
     width: 84%;
     gap: clamp(0.55rem, 1.8vh, 0.9rem);
   }
-
   .dropdown a {
     font-size: clamp(0.68rem, 2.2vw, 0.84rem);
     letter-spacing: 0.035em;
   }
-
-  .hero-text {
-    width: 56vw;
-  }
+  .hero-text { width: 56vw; }
 }
 
 @media (max-width: 520px) {
@@ -355,24 +319,11 @@ a {
     --pillar-width: clamp(76px, 23vw, 104px);
     --pillar-edge: 0.4rem;
   }
-
   .pillar::before,
-  .pillar::after {
-    width: calc(100% + 14px);
-  }
-
-  .pillar-toggle {
-    width: 90%;
-    letter-spacing: 0.06em;
-  }
-
-  .dropdown {
-    width: 92%;
-  }
-
-  .hero-text {
-    width: 48vw;
-  }
+  .pillar::after { width: calc(100% + 14px); }
+  .pillar-toggle { width: 90%; letter-spacing: 0.06em; }
+  .dropdown { width: 92%; }
+  .hero-text { width: 48vw; }
 }
 
 /* ---------- No-JS and reduced-motion fallbacks ---------- */
@@ -382,21 +333,14 @@ a {
   visibility: hidden;
 }
 
-.no-js .bg-final {
-  opacity: 1;
-}
-
-.no-js .pillar {
-  transform: translate3d(0, 0, 0);
-}
-
+.no-js .bg-final { opacity: 1; }
+.no-js .pillar { transform: translate3d(0, 0, 0); }
 .no-js .dropdown {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translate(-50%, 0) scaleY(1);
 }
-
 .no-js .hero-text {
   opacity: 1;
   transform: translate(-50%, 0);
@@ -411,9 +355,5 @@ a {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-  }
-
-  .scene-image {
-    transform: none;
   }
 }
