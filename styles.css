@@ -56,11 +56,9 @@ a { font: inherit; }
   position: absolute;
   top: 50%;
   left: 50%;
-  width: auto;
-  height: auto;
   max-width: 90vw;
   max-height: 90vh;
-  object-fit: contain;
+  object-fit: scale-down;
   object-position: center;
   transform: translate(-50%, -50%);
   user-select: none;
