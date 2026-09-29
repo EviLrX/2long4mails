@@ -43,12 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     landing.classList.add('show-two');
     
     // Wait for fade (1400ms) + hold on bt-2
-    await wait(1400 + 1200);
+    await wait(2200 + 1200);  // CSS fade (2200ms) + hold time (1200ms)
     debug('showing crown');
     landing.classList.add('show-final');
     
     // Wait for fade (1400ms) + hold on crown
-    await wait(1400 + 1200);
+    await wait(2200 + 1200);  // CSS fade (2200ms) + hold time (1200ms)
     debug('showing left pillar');
     leftPillar.classList.add('landed');
     
