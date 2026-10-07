@@ -1,4 +1,5 @@
-#intro {
+#intro 
+{
     position: fixed;
     inset: 0;
 }
@@ -9,4 +10,9 @@
 
 .pillar-right {
     /* other pillar animation */
+}
+
+body {
+  background-color: black;
+  color: white; /* Optional: Makes your text white so it is readable on the black background */
 }
