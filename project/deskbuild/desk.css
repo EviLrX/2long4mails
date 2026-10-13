@@ -1,0 +1,38 @@
+@keyframes slideLeftAnimation {
+  0% { transform: translateX(-100px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.element {
+  animation-name: slideLeftAnimation;
+  animation-duration: 1.8s;
+  animation-timing-function: ease-in;
+  animation-delay: 0.5s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: both;
+}
+
+body {
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-size: 3.5rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(100, 200, 255, 0.3);
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2rem;
+  font-style: italic;
+  opacity: 0.9;
+}
