@@ -1,0 +1,20 @@
+:root {
+  /* ALL the variables you already have */
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg-color);
+}
+
+body {
+  color: var(--text-color);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button,
+a { font: inherit; }
