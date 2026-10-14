@@ -1,0 +1,164 @@
+/* ---------- Pillars ---------- */
+.pillar {
+  position: absolute;
+  top: 1.1rem;
+  bottom: 1.1rem;
+  width: var(--pillar-width);
+  z-index: 4;
+  overflow: visible;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.035) 0 2px,
+      transparent 2px 20px
+    ),
+    linear-gradient(90deg,
+      rgba(7, 7, 9, 0.36) 0%,
+      rgba(31, 27, 22, 0.34) 24%,
+      rgba(57, 48, 34, 0.34) 49%,
+      rgba(27, 24, 21, 0.34) 73%,
+      rgba(7, 7, 9, 0.46) 100%
+    ),
+    url("assets/pill-bk.webp");
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-size: auto, cover, cover;
+  background-position: center, center, center;
+  background-blend-mode: normal, multiply, normal;
+  border: 2px solid var(--panel-border);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 0 38px rgba(0, 0, 0, 0.58),
+    0 18px 40px rgba(0, 0, 0, 0.68);
+  transform: translate3d(0, calc(-100% - 4rem), 0);
+}
+
+.pillar::before,
+.pillar::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: calc(100% + clamp(18px, 2.4vw, 34px));
+  height: clamp(28px, 5.8vh, 54px);
+  transform: translateX(-50%);
+  border: 2px solid rgba(218, 180, 91, 0.56);
+  background:
+    linear-gradient(90deg,
+      #09090b 0%,
+      #322b22 24%,
+      #66563a 50%,
+      #2b261f 76%,
+      #09090b 100%
+    );
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.82),
+    0 8px 20px rgba(0, 0, 0, 0.42);
+}
+
+.pillar::before {
+  top: -1px;
+  transform: translate(-50%, -32%);
+  border-radius: 7px 7px 2px 2px;
+}
+
+.pillar::after {
+  bottom: -1px;
+  transform: translate(-50%, 32%);
+  border-radius: 2px 2px 7px 7px;
+}
+
+.pillar-left { left: var(--pillar-edge); }
+.pillar-right { right: var(--pillar-edge); }
+
+.pillar.landed {
+  animation: pillar-slam var(--pillar-drop) var(--pillar-ease) forwards;
+}
+
+@keyframes pillar-slam {
+  0% { transform: translate3d(0, calc(-100% - 4rem), 0); }
+  72% { transform: translate3d(0, 12px, 0); }
+  88% { transform: translate3d(0, -4px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ---------- Menu controls ---------- */
+.pillar-toggle {
+  position: absolute;
+  top: clamp(4.3rem, 12vh, 7.4rem);
+  left: 50%;
+  width: 80%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 0.65rem 0.35rem;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 213, 111, 0.44);
+  background: transparent;
+  color: var(--text-color);
+  font-size: clamp(0.82rem, 1.5vw, 1.08rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px #000;
+  cursor: pointer;
+}
+
+.pillar-toggle::after {
+  content: "⌄";
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9em;
+  transition: transform 220ms ease;
+}
+
+.pillar.open .pillar-toggle::after { transform: rotate(180deg); }
+
+.pillar-toggle:focus-visible,
+.dropdown a:focus-visible {
+  outline: 3px solid rgba(255, 213, 111, 0.92);
+  outline-offset: 3px;
+}
+
+.dropdown {
+  position: absolute;
+  top: clamp(8.4rem, 22vh, 12.5rem);
+  left: 50%;
+  width: 76%;
+  z-index: 1;
+  display: grid;
+  gap: clamp(0.7rem, 2.1vh, 1.25rem);
+  padding: 0.8rem 0.25rem 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -26px) scaleY(0.90);
+  transform-origin: top center;
+  transition:
+    opacity 260ms ease,
+    transform var(--menu-drop) cubic-bezier(.14, .76, .22, 1.08),
+    visibility 0s linear var(--menu-drop);
+}
+
+.pillar.open .dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scaleY(1);
+  transition-delay: 0s;
+}
+
+.dropdown a {
+  display: block;
+  padding: 0.48rem 0.15rem;
+  color: var(--muted-text);
+  text-align: center;
+  text-decoration: none;
+  font-size: clamp(0.76rem, 1.3vw, 0.98rem);
+  letter-spacing: 0.07em;
+  text-shadow: 0 2px 8px #000;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.dropdown a:hover,
+.dropdown a:focus-visible {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
