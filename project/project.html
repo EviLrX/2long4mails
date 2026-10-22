@@ -1,43 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="stylesheet" href="../global.css">
-<link rel="stylesheet" href="../pillars.css">
-<link rel="stylesheet" href="./project.css">
-    <script src="/pillars.js"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    window.dropPillars();
-  });
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects</title>
+  <link rel="stylesheet" href="../global.css">
+  <link rel="stylesheet" href="../pillars.css">
+  <link rel="stylesheet" href="./project.css">
+  <script src="../pillars.js" defer></script>
 </head>
-
 <body>
-    <h1 class="element">ProJeCTS</h1>
-    <p class="element">it's a desk....from hell.</p>
-<nav class="pillar pillar-left" aria-label="Main menu">
-  <button class="pillar-toggle" type="button" aria-expanded="false" aria-controls="menu-main">
-    Menu
-  </button>
+  <h1 class="element">ProJeCTS</h1>
+  <p class="element">it's a desk....from hell.</p>
 
-  <div class="dropdown" id="menu-main">
-    <a href="../about.html">About</a>
-    <a href="../gallery.html">Gallery</a>
-    <a href="/deskbuild/desk.html">Desk</a>
-    <a href="../music.html">Music</a>
-  </div>
-</nav>
+  <nav class="pillar pillar-left" aria-label="Main menu">
+    <button class="pillar-toggle" type="button" aria-expanded="false" aria-controls="menu-main">
+      Menu
+    </button>
 
-<nav class="pillar pillar-right" aria-label="Explore menu">
-  <button class="pillar-toggle" type="button" aria-expanded="false" aria-controls="menu-explore">
-    Explore
-  </button>
+    <div class="dropdown" id="menu-main">
+      <a href="../about.html">About</a>
+      <a href="../gallery.html">Gallery</a>
+      <a href="./deskbuild/desk.html">Desk</a>
+      <a href="../music.html">Music</a>
+    </div>
+  </nav>
 
-  <div class="dropdown" id="menu-explore">
-    <a href="../blog.html">Blog</a>
-    <a href="../shakes.html">Shakes</a>
-    <a href="../events.html">Events</a>
-    <a href="../members.html">Members</a>
-  </div>
-</nav>
+  <nav class="pillar pillar-right" aria-label="Explore menu">
+    <button class="pillar-toggle" type="button" aria-expanded="false" aria-controls="menu-explore">
+      Explore
+    </button>
+
+    <div class="dropdown" id="menu-explore">
+      <a href="../blog.html">Blog</a>
+      <a href="../shakes.html">Shakes</a>
+      <a href="../events.html">Events</a>
+      <a href="../members.html">Members</a>
+    </div>
+  </nav>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.dropPillars) {
+        window.dropPillars();
+      } else {
+        document.querySelectorAll('.pillar').forEach(pillar => {
+          pillar.classList.add('landed');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
