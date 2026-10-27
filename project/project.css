@@ -12,13 +12,6 @@
   animation-direction: normal;
   animation-fill-mode: both;
 }
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".pillar").forEach(pillar => {
-      pillar.classList.add("landed");
-    });
-  });
-</script>
 body {
   background-color: black;
   color: white;
