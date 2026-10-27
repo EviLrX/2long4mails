@@ -1,18 +1,3 @@
-:root {
-  --bg-color: #020204;
-  --text-color: #f4e7c1;
-  --muted-text: #cdbb91;
-  --accent: #ffd56f;
-  --panel-border: rgba(218, 180, 91, 0.52);
-  --scene-fade: 2200ms;
-  --scene-ease: ease-in-out;
-  --pillar-drop: 1100ms;
-  --pillar-ease: cubic-bezier(.16, .9, .25, 1.12);
-  --menu-drop: 520ms;
-  --pillar-width: clamp(108px, 14vw, 210px);
-  --pillar-edge: clamp(0.75rem, 4vw, 5rem);
-}
-
 * { box-sizing: border-box; }
 
 html,
