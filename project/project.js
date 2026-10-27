@@ -1,6 +1,5 @@
-<script src="../pillars.js" defer></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    window.initPillars();
-  });
-</script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.dropPillars();
+});
