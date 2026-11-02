@@ -2,7 +2,7 @@
   0% { transform: translateX(-100px); opacity: 0; }
   100% { transform: translateX(0); opacity: 1; }
 }
-
+## yeah bitch you really thought lol, how many tries? 
 .element {
   animation-name: slideLeftAnimation;
   animation-duration: 1.8s;
@@ -11,6 +11,11 @@
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-fill-mode: both;
+}
+## this is defining the space any sporaric rants toes in, making sure the shit don't clip into/behind menus
+.content {
+  margin-left: 20%;
+  margin-right: 20%;
 }
 body {
   background-color: black;
