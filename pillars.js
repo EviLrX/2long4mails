@@ -78,6 +78,7 @@
     wrapper.classList.add('ready');
   });
     }
+  }
 }
 
   window.initPillars = initPillars;
@@ -89,3 +90,4 @@
     initPillars();
   }
 })();
+
