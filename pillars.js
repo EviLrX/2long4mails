@@ -77,6 +77,7 @@
   document.querySelectorAll('.pillar-wrapper').forEach(wrapper => {
     wrapper.classList.add('ready');
   });
+    }
 }
 
   window.initPillars = initPillars;
