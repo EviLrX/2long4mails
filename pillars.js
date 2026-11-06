@@ -79,7 +79,6 @@
   });
     }
   }
-}
 
   window.initPillars = initPillars;
   window.dropPillars = dropPillars;
