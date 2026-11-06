@@ -64,12 +64,20 @@
     }
 
     if (openAfter) {
-      await wait(staggerMs);
-      document.querySelectorAll('.pillar').forEach(pillar => {
-        setPillarOpen(pillar, true);
-      });
-    }
-  }
+  await wait(staggerMs);
+
+  document.querySelectorAll('.pillar').forEach(pillar => {
+    setPillarOpen(pillar, true);
+  });
+
+  // Wait for the dropdown animation
+  await wait(520);
+
+  // Enable the sliding behavior
+  document.querySelectorAll('.pillar-wrapper').forEach(wrapper => {
+    wrapper.classList.add('ready');
+  });
+}
 
   window.initPillars = initPillars;
   window.dropPillars = dropPillars;
