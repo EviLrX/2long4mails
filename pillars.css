@@ -162,3 +162,27 @@
   color: var(--accent);
   transform: translateY(-1px);
 }
+
+/* Sliding pillar wrapper */
+
+.pillar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--pillar-width) + var(--pillar-edge));
+  z-index: 4;
+
+  transform: translateX(0);
+  transition: transform 0.5s ease;
+}
+
+/* Retract only after the intro finishes */
+.pillar-wrapper.ready {
+  transform: translateX(calc(-100% + 15px));
+}
+
+/* Reveal when hovered */
+.pillar-wrapper.ready:hover {
+  transform: translateX(0);
+}
