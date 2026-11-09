@@ -12,10 +12,12 @@ keyframes slideLeftAnimation {
   animation-direction: normal;
   animation-fill-mode: both;
 }
-
+/* the . is creating a new class with the parameters that follows which is then referenced in HTML by doing */
+/* <div class="content"> */ 
 .content {
-  margin-left: 20%;
-  margin-right: 20%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
 }
 body {
   background-color: black;
